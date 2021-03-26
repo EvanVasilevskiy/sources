@@ -19,55 +19,55 @@ __fastcall TFMain::TFMain(TComponent* Owner)
 //---------------------------------------------------------------------------
 struct frames* __fastcall TFMain::AddFrame(unsi type, AnsiString id)
 {
-   ZeroMemory(&(iframes[count_frames]), sizeof(struct frames));
-   int ylastvis_h = 0;
-   for(int i = 0; i < count_frames; i++)
-	  if(iframes[i].visible)
-		 ylastvis_h = iframes[i].y + iframes[i].height;
+    ZeroMemory(&(iframes[count_frames]), sizeof(struct frames));
+    int ylastvis_h = 0;
+    for(int i = 0; i < count_frames; i++)
+       if(iframes[i].visible)
+	  ylastvis_h = iframes[i].y + iframes[i].height;
 
-   if(count_frames > 0)
-   {
-	   iframes[count_frames].visible = true;
-	   iframes[count_frames].y       = ylastvis_h;
-	   iframes[count_frames].height  = 200;
-	   iframes[count_frames].width   = FMain->ClientWidth;
-	   iframes[count_frames].xscrollwidth = 100;
-	   iframes[count_frames].typedata     = type;
-       iframes[count_frames].SetId(id);
-   }
-   count_frames++;   
-   return (&(iframes[count_frames - 1]));
+    if(count_frames > 0)
+    {
+        iframes[count_frames].visible = true;
+        iframes[count_frames].y       = ylastvis_h;
+        iframes[count_frames].height  = 200;
+        iframes[count_frames].width   = FMain->ClientWidth;
+        iframes[count_frames].xscrollwidth = 100;
+        iframes[count_frames].typedata     = type;
+        iframes[count_frames].SetId(id);
+    }
+    count_frames++;   
+    return (&(iframes[count_frames - 1]));
 }
 //---------------------------------------------------------------------------
 struct frames* __fastcall TFMain::SearchOrAddFrame(unsi type, AnsiString id)
 {
-	for(int i = 0; i < count_frames; i++)
-	{
-		if(iframes[i].typedata == type && (AnsiString)(iframes[i].id) == id)
-		   return  &iframes[i];
-	}
+    for(int i = 0; i < count_frames; i++)
+    {
+	if(iframes[i].typedata == type && (AnsiString)(iframes[i].id) == id)
+	   return  &iframes[i];
+    }
 
-	return AddFrame(type, id);
+    return AddFrame(type, id);
 }
 //---------------------------------------------------------------------------
 struct frames* __fastcall TFMain::SearchFrame(unsi type, AnsiString id)
 {
-	for(int i = 0; i < count_frames; i++)
-	{
-		if(iframes[i].typedata == type && (AnsiString)(iframes[i].id) == id)
-		   return  &iframes[i];
-	}
+    for(int i = 0; i < count_frames; i++)
+    {
+	if(iframes[i].typedata == type && (AnsiString)(iframes[i].id) == id)
+	   return  &iframes[i];
+    }
 
-	return NULL;
+    return NULL;
 }
 //---------------------------------------------------------------------------
 void __fastcall TFMain::HideFramesOscillators()
 {
     for(int i = 0; i < count_frames; i++)
-	{
-		if(iframes[i].typedata == TYPE_OSCILLATOR)
-		   iframes[i].visible = false;
-	}
+    {
+	if(iframes[i].typedata == TYPE_OSCILLATOR)
+	   iframes[i].visible = false;
+    }
 }
 //---------------------------------------------------------------------------
 void __fastcall TFMain::ScrollBar1Change(TObject *Sender)
@@ -167,7 +167,7 @@ void __fastcall TFMain::OpenTida(AnsiString FileName)
 	  label_date->Caption = date_string1 + " - " + date_string2;
 
 	  //Обнулим сделки
-      SmartTest->count_orders = 0;
+          SmartTest->count_orders = 0;
 	  //вычислим свечки по всем таймфреймам
 	  GetCandlesAllTimeFrames();
 	  //расставим соответствие индексов свечек и новостей
