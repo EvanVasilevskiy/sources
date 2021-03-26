@@ -137,16 +137,16 @@ void __fastcall TFMain::OpenTida(AnsiString FileName)
 		  CopyMemory(&count_idata, mass + sizeof(int), sizeof(int));
 		  if(count_idata > 0 && count_idata < MAX_IDATA)
 		  {
-				if(idata)
-				{
-					free(idata);
-                    idata = NULL;
-                }
-				if(!idata)
-				   idata = (struct tikdata*)malloc(sizeof(struct tikdata)*count_idata);
-				ZeroMemory(idata, count_idata*sizeof(struct tikdata));
+			if(idata)
+			{
+				free(idata);
+                                idata = NULL;
+                        }
+			if(!idata)
+			    idata = (struct tikdata*)malloc(sizeof(struct tikdata)*count_idata);
+			ZeroMemory(idata, count_idata*sizeof(struct tikdata));
 
-				CopyMemory(idata, mass + sizeof(int)*2, sizeof(struct tikdata)*count_idata);
+			CopyMemory(idata, mass + sizeof(int)*2, sizeof(struct tikdata)*count_idata);
 		  }
 	  }
 
