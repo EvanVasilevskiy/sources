@@ -82,51 +82,51 @@ void __fastcall TFMain::ScrollBar1Change(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TFMain::FormResize(TObject *Sender)
 {
-   bit->Width  = FMain->ClientWidth;
-   bit->Height = FMain->ClientHeight;
-   ScrollBar1->Height   = FMain->ClientHeight;
-   ScrollBar1->Max      = FMain->ClientHeight*4;
-   ScrollBar1->PageSize = FMain->ClientHeight;
-   ScrollBar1->Left     = FMain->ClientWidth - ScrollBar1->Width - 0;
-   ScrollBar1->BringToFront();
-   Simulation->Top      = FMain->ClientHeight - Simulation->Height;
-   label_date->Top      = Simulation->Top + 1 /*- label_date->Height - 3*/;
-   Simulation->Left     = 140;
-   Simulation->Width    = FMain->ClientWidth - ScrollBar1->Width - Simulation->Left;
-   label_date->BringToFront();
-   DrawAll();
+    bit->Width  = FMain->ClientWidth;
+    bit->Height = FMain->ClientHeight;
+    ScrollBar1->Height   = FMain->ClientHeight;
+    ScrollBar1->Max      = FMain->ClientHeight*4;
+    ScrollBar1->PageSize = FMain->ClientHeight;
+    ScrollBar1->Left     = FMain->ClientWidth - ScrollBar1->Width - 0;
+    ScrollBar1->BringToFront();
+    Simulation->Top      = FMain->ClientHeight - Simulation->Height;
+    label_date->Top      = Simulation->Top + 1 /*- label_date->Height - 3*/;
+    Simulation->Left     = 140;
+    Simulation->Width    = FMain->ClientWidth - ScrollBar1->Width - Simulation->Left;
+    label_date->BringToFront();
+    DrawAll();
 }
 //---------------------------------------------------------------------------
 int __fastcall TFMain::EvStrToTime(AnsiString date, AnsiString time)
 {
-   //yymmdd hhmmss
-   TFormatSettings sett;
-   sett.ShortDateFormat = "yyyy-mm-dd";    sett.DateSeparator = '-';
-   sett.ShortTimeFormat = "hh:mm:ss";      sett.TimeSeparator = ':';
+    //yymmdd hhmmss
+    TFormatSettings sett;
+    sett.ShortDateFormat = "yyyy-mm-dd";    sett.DateSeparator = '-';
+    sett.ShortTimeFormat = "hh:mm:ss";      sett.TimeSeparator = ':';
 
-   TDateTime dt = StrToDateTime(date.SubString(1, 4) + "-" + date.SubString(5, 2) + "-" +
+    TDateTime dt = StrToDateTime(date.SubString(1, 4) + "-" + date.SubString(5, 2) + "-" +
 						date.SubString(7, 2) + " " + time.SubString(1, 2) + ":" +
 						time.SubString(3, 2) + ":" + time.SubString(5, 2), sett);
-   AnsiString sdt = dt.DateTimeString();
+    AnsiString sdt = dt.DateTimeString();
 
-   return RoundTo((dt.Val - 25569.0)*86400, 0);
+    return RoundTo((dt.Val - 25569.0)*86400, 0);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFMain::OpenTida(AnsiString FileName)
 {
-   SmartTest->ClearCalcIndicator();
-   // Скроем осцилляторы
-   HideFramesOscillators();
+    SmartTest->ClearCalcIndicator();
+    // Скроем осцилляторы
+    HideFramesOscillators();
 
-   if(idata)
-   {
+    if(idata)
+    {
 	   ZeroMemory(idata, MAX_IDATA*sizeof(struct tikdata));
 	   count_idata = 0;
-   }
+    }
 
-   AnsiString ext = ExtractFileExt(FileName);
-   if(ext == ".tida")
-   {
+    AnsiString ext = ExtractFileExt(FileName);
+    if(ext == ".tida")
+    {
 	  CurFileName = FileName;
 	  int sz = 0;
 	  char* mass = ReadFileD(FileName, sz);
@@ -176,24 +176,24 @@ void __fastcall TFMain::OpenTida(AnsiString FileName)
 	  DrawAll();
 
 	  return;
-   }
+    }
 }
 //---------------------------------------------------------------------------
 void __fastcall TFMain::OpenCada(AnsiString FileName)
 {
-   SmartTest->ClearCalcIndicator();
-   // Скроем осцилляторы
-   HideFramesOscillators();
+    SmartTest->ClearCalcIndicator();
+    // Скроем осцилляторы
+    HideFramesOscillators();
 
-   if(idata)
-   {
+    if(idata)
+    {
 	   ZeroMemory(idata, MAX_IDATA*sizeof(struct tikdata));
 	   count_idata = 0;
-   }
+    }
 
-   AnsiString ext = ExtractFileExt(FileName);
-   if(ext == ".cada")
-   {
+    AnsiString ext = ExtractFileExt(FileName);
+    if(ext == ".cada")
+    {
 	  ZeroMemory(candles, MAX_ICNDLS*sizeof(struct candlesdata));
 	  ZeroMemory(count_candles, 10*sizeof(int));
 
@@ -238,23 +238,23 @@ void __fastcall TFMain::OpenCada(AnsiString FileName)
 	  DrawAll();
 
 	  return;
-   }
+    }
 }
 //---------------------------------------------------------------------------
 void __fastcall TFMain::N3Click(TObject *Sender)
 {
-   OD->FilterIndex = 2;
-   if(!OD->Execute()) return;
+    OD->FilterIndex = 2;
+    if(!OD->Execute()) return;
 
-   SmartTest->ClearCalcIndicator();
-   // Скроем осцилляторы
-   HideFramesOscillators();
+    SmartTest->ClearCalcIndicator();
+    // Скроем осцилляторы
+    HideFramesOscillators();
 
-   count_idata = 0;
+    count_idata = 0;
 
-   AnsiString ext = ExtractFileExt(OD->FileName);
-   if(ext == ".tida")
-   {
+    AnsiString ext = ExtractFileExt(OD->FileName);
+    if(ext == ".tida")
+    {
 	  CurFileName = OD->FileName;
 	  int sz = 0;
 	  char* mass = ReadFileD(OD->FileName, sz);
@@ -297,7 +297,7 @@ void __fastcall TFMain::N3Click(TObject *Sender)
 	  SmartTest->resvirag_tf = -1;
 
 	  //Обнулим сделки
-      SmartTest->count_orders = 0;
+          SmartTest->count_orders = 0;
 	  //вычислим свечки по всем таймфреймам
 	  GetCandlesAllTimeFrames();
 	  // Вычислим минуты часы дни месяцы годы для оптимизации скорости анализа
@@ -322,22 +322,22 @@ void __fastcall TFMain::N3Click(TObject *Sender)
 	  }
 
 	  return;
-   }
+    }
 
-   if(ext == ".cada")
-   {
+    if(ext == ".cada")
+    {
 	   OpenCadaData(OD->FileName);
-       SmartTest->resvirag_tf = -1;
+           SmartTest->resvirag_tf = -1;
 
 	   // Запомним последний открытый файл данных, чтобы автоматом его открыть при запуске программы
 	   WriteToFile(ExtractFilePath(Application->ExeName) + "runfast.txt", ((AnsiString)OD->FileName).c_str(), OD->FileName.Length());
 
 	   return;
-   }
+    }
 
-   //<TICKER>,<PER>,<DATE>,<TIME>,<LAST>,<VOL>
-   for(int ff = 0; ff < OD->Files->Count; ff++)
-   {
+    //<TICKER>,<PER>,<DATE>,<TIME>,<LAST>,<VOL>
+    for(int ff = 0; ff < OD->Files->Count; ff++)
+    {
 	   Simulation->Position = 0;
 	   AnsiString FileName = OD->Files->Strings[ff];
 
@@ -523,7 +523,7 @@ void __fastcall TFMain::OpenCadaData(AnsiString FileName)
 	{
 	    CalcVolumesVolatilnostFramesHistogramms();
 	}
-    catch(...) {}
+        catch(...) {}
 
 	DrawAll();
 
@@ -795,7 +795,7 @@ void __fastcall TFMain::CalcVolumesVolatilnostFramesHistogramms()
 				{
 					if(ct_volume_days_week[ds] > 0)
 					   volume_days_week[ds] /= ct_volume_days_week[ds];
-                }
+                                }
 			}
 		}
 	}
@@ -825,7 +825,7 @@ void __fastcall TFMain::CalcVolumesVolatilnostFramesHistogramms()
 
 		   num_end_years = i;
 		   count_years++;
-       }
+           }
    }
    for(int i = num_start_years; i <= num_end_years; i++)
    {
@@ -894,36 +894,36 @@ void __fastcall TFMain::CalcVolumesVolatilnostFramesHistogramms()
 
 char* __fastcall TFMain::ReadFileD(AnsiString FileName, int& sz)
 {
-   sz = 0;
-   FILE* fl = fopen(FileName.c_str(), "rb");
-   if(!fl) return NULL;
-   fseek(fl, 0, SEEK_END);
-   sz = ftell(fl);  
-   fseek(fl, 0, SEEK_SET);
-   if(sz <= 0)
-   {
+    sz = 0;
+    FILE* fl = fopen(FileName.c_str(), "rb");
+    if(!fl) return NULL;
+    fseek(fl, 0, SEEK_END);
+    sz = ftell(fl);  
+    fseek(fl, 0, SEEK_SET);
+    if(sz <= 0)
+    {
 	   fclose(fl);
 	   return NULL;
-   }
+    }
 
-   char* mass = NULL;
-   try
-   {
+    char* mass = NULL;
+    try
+    {
 	  mass = (char*)malloc(sz + 1);
 	  if(mass)
 	  {
 		 fread(mass, sz, 1, fl);
 		 mass[sz] = '\0';
-      }
-   }
-   catch(...)
-   {
+          }
+    }
+    catch(...)
+    {
 	  fclose(fl);
 	  return NULL;
-   }
+    }
 
-   fclose(fl);
-   return mass;
+    fclose(fl);
+    return mass;
 }
 //---------------------------------------------------------------------------
 AnsiString __fastcall TFMain::ReadFile(AnsiString FileName)
@@ -947,33 +947,31 @@ void __fastcall TFMain::WriteToFile(AnsiString FileName, char* buf, int sz)
 //---------------------------------------------------------------------------
 char* __fastcall TFMain::GetStrC(char* mass, char* end, char c, AnsiString &res)
 {
-   res = "";
-   if(!mass || !end || mass > end || mass[0] == '\0') return NULL;
-   if(mass >= end) return NULL;
-   int m = (int)mass;
-   if(m <= 0)
-      int aa = 1;
-   try
-   {
-   while(mass[0] != c)
-   {
-	  if(mass[0] == '\0') break;
-	  res += (AnsiString)mass[0];
-	  if(mass + 1 >= end) break;
-	  mass++;
+    res = "";
+    if(!mass || !end || mass > end || mass[0] == '\0') return NULL;
+    if(mass >= end) return NULL;
+    int m = (int)mass;
+    try
+    {
+	    while(mass[0] != c)
+	    {
+		  if(mass[0] == '\0') break;
+		  res += (AnsiString)mass[0];
+		  if(mass + 1 >= end) break;
+		  mass++;
+		  int m = (int)mass;
+		  if(m <= 1)
+		     int aa = 1;
+	    }
+    }
+    catch(...)
+    {
 	  int m = (int)mass;
-	  if(m <= 1)
-	     int aa = 1;
-   }
-   }
-   catch(...)
-   {
-	  int m = (int)mass;
-      int e = (int)end;
+          int e = (int)end;
 	  int aa = 1;
-   }
-   if(res != "") res = Trim(res);
-   return mass;
+    }
+    if(res != "") res = Trim(res);
+    return mass;
 }
 //---------------------------------------------------------------------------
 int __fastcall TFMain::GetStrC(AnsiString str, int start, char c, AnsiString &res)
@@ -996,34 +994,34 @@ int __fastcall TFMain::GetStrC(AnsiString str, int start, char c, AnsiString &re
 void __fastcall TFMain::FormPaint(TObject *Sender)
 {
     int top = 0 + 60;
-	int wd = ClientWidth - ScrollBar1->Width;
-	int ht = ClientHeight - top - Simulation->Height;     bit->Width;  bit->Height;
-	Canvas->CopyRect(Rect(0, top, wd, ht + top), bit->Canvas,
+    int wd = ClientWidth - ScrollBar1->Width;
+    int ht = ClientHeight - top - Simulation->Height;     bit->Width;  bit->Height;
+    Canvas->CopyRect(Rect(0, top, wd, ht + top), bit->Canvas,
 					 Rect(0, ScrollBar1->Position, wd, ht + ScrollBar1->Position));
 }
 //---------------------------------------------------------------------------
 void __fastcall TFMain::DrawAll()
 {
-   if(!count_frames) return;
+    if(!count_frames) return;
 
-   if(DopGraphicPrices->Checked)
+    if(DopGraphicPrices->Checked)
 	  iframes[1].visible = true;
-   else
+    else
 	  iframes[1].visible = false;
 
-   int ht = bit->Height;
-   for(int i = 0; i < count_frames; i++)
+    int ht = bit->Height;
+    for(int i = 0; i < count_frames; i++)
 	  if(iframes[i].visible && iframes[i].y + iframes[i].height > ht)
 		 ht = iframes[i].y + iframes[i].height;
-   bit->Height = ht;
-   bit->Canvas->Brush->Color = RGB(230, 230, 230);
-   if(!movegorscroll)
-      bit->Canvas->FillRect(Rect(0, 0, bit->Width, bit->Height));
+    bit->Height = ht;
+    bit->Canvas->Brush->Color = RGB(230, 230, 230);
+    if(!movegorscroll)
+       bit->Canvas->FillRect(Rect(0, 0, bit->Width, bit->Height));
 
-   //синхронизируем горизонтальные скроллы с графиком цены
-   if(AutoSynhronize->Checked)
-   for(int i = 1; i < count_frames; i++)
-   {
+    //синхронизируем горизонтальные скроллы с графиком цены
+    if(AutoSynhronize->Checked)
+    for(int i = 1; i < count_frames; i++)
+    {
 	  if(iframes[i].typedata != TYPE_HISTOGRAM_1 &&
 		 iframes[i].typedata != TYPE_HISTOGRAM_2 &&
 		 iframes[i].typedata != TYPE_MULTI_HISTOGRAM_1 &&
@@ -1033,15 +1031,15 @@ void __fastcall TFMain::DrawAll()
 		 iframes[i].xscrollpos      = iframes[0].xscrollpos;
 	     iframes[i].xsmallscrollpos = iframes[0].xsmallscrollpos;
 	  }
-   }
+    }
 
-   // Установим позиции и длину, если нужно
-   int xx = 0, yy = 0;
-   int minwd = 300;
-   int wdmx = ClientWidth - ScrollBar1->Width;
-   int curht = 0;
-   for(int i = 0; i < count_frames; i++)
-   {
+    // Установим позиции и длину, если нужно
+    int xx = 0, yy = 0;
+    int minwd = 300;
+    int wdmx = ClientWidth - ScrollBar1->Width;
+    int curht = 0;
+    for(int i = 0; i < count_frames; i++)
+    {
 	   struct frames* fr = &iframes[i];
 	   if(!fr->visible)
 		  continue;
@@ -1079,16 +1077,16 @@ void __fastcall TFMain::DrawAll()
 		  curht = fr->height;
 	   xx = nextxx;
 	   yy = nextyy;
-   }
-   if(yy > 0)
-      ScrollBar1->Max = yy + 300;
+    }
+    if(yy > 0)
+       ScrollBar1->Max = yy + 300;
 
-   for(int i = 0; i < count_frames; i++)
-   {
+    for(int i = 0; i < count_frames; i++)
+    {
 	   // Условия, чтобы во время прокрутки гор скролла этого фрейма отрисовывался только он
-       // от подвисонов
+           // от подвисонов
 	   if(movegorscroll && /* curframe &&*/ &iframes[i] != curframe)
-          continue;
+              continue;
 
 	   if(iframes[i].visible &&
 		  (iframes[i].typedata == TYPE_PRICE_CANDLES ||
@@ -1110,10 +1108,10 @@ void __fastcall TFMain::DrawAll()
 		   case TYPE_CANDLES_NEWS:  DrawCandlesNews(iframes[i]);  break;
 		   case TYPE_ORDERS_1:      DrawOrdersWind(&iframes[i]);   break;
 	   }
-   }
-   Canvas->Brush->Color = clBtnFace;
+    }
+    Canvas->Brush->Color = clBtnFace;
 
-   Invalidate();
+    Invalidate();
 }
 //---------------------------------------------------------------------------
 
@@ -1121,35 +1119,35 @@ void __fastcall TFMain::DrawAll()
 
 void __fastcall TFMain::DrawWind(struct frames frame)
 {
-   bit->Canvas->Brush->Color = RGB(230, 230, 230);
-   bit->Canvas->Pen->Width = 2;
-   bit->Canvas->FillRect(Rect(frame.x, frame.y + 20, frame.x + frame.width, frame.y + frame.height));
-   bit->Canvas->Brush->Color = RGB(150, 150, 150);
-   bit->Canvas->FrameRect(Rect(frame.x, frame.y, frame.x + frame.width, frame.y + frame.height));
-   bit->Canvas->Brush->Color = clWhite;
-   bit->Canvas->FillRect(Rect(frame.x + 2, frame.y + 2, frame.x + frame.width - 2, frame.y + 20));
-   bit->Canvas->Font->Name = "Verdana";
-   bit->Canvas->Font->Size = 10;
-   bit->Canvas->Font->Style = TFontStyles() << fsBold;
-   bit->Canvas->Font->Color = clBlack;
-   bit->Canvas->TextOutW(frame.x + 10, frame.y + 2, frame.head);
-   //scroll
-   bit->Canvas->Brush->Color = RGB(150, 150, 150);
-   bit->Canvas->FillRect(Rect(frame.x + 2, frame.y + frame.height - 15, frame.x + frame.width - 2, frame.y + frame.height - 2));
-   bit->Canvas->Brush->Color = clWhite;
-   bit->Canvas->FillRect(Rect(frame.x + frame.xscrollpos, frame.y + frame.height - 15 + 2,
+    bit->Canvas->Brush->Color = RGB(230, 230, 230);
+    bit->Canvas->Pen->Width = 2;
+    bit->Canvas->FillRect(Rect(frame.x, frame.y + 20, frame.x + frame.width, frame.y + frame.height));
+    bit->Canvas->Brush->Color = RGB(150, 150, 150);
+    bit->Canvas->FrameRect(Rect(frame.x, frame.y, frame.x + frame.width, frame.y + frame.height));
+    bit->Canvas->Brush->Color = clWhite;
+    bit->Canvas->FillRect(Rect(frame.x + 2, frame.y + 2, frame.x + frame.width - 2, frame.y + 20));
+    bit->Canvas->Font->Name = "Verdana";
+    bit->Canvas->Font->Size = 10;
+    bit->Canvas->Font->Style = TFontStyles() << fsBold;
+    bit->Canvas->Font->Color = clBlack;
+    bit->Canvas->TextOutW(frame.x + 10, frame.y + 2, frame.head);
+    //scroll
+    bit->Canvas->Brush->Color = RGB(150, 150, 150);
+    bit->Canvas->FillRect(Rect(frame.x + 2, frame.y + frame.height - 15, frame.x + frame.width - 2, frame.y + frame.height - 2));
+    bit->Canvas->Brush->Color = clWhite;
+    bit->Canvas->FillRect(Rect(frame.x + frame.xscrollpos, frame.y + frame.height - 15 + 2,
 						 frame.x + frame.xscrollpos + frame.xscrollwidth, frame.y + frame.height - 4));
-   //small scroll
-   bit->Canvas->Brush->Color = RGB(200, 200, 200);
-   bit->Canvas->FillRect(Rect(frame.x + frame.xscrollpos + frame.xsmallscrollpos + 5,
+    //small scroll
+    bit->Canvas->Brush->Color = RGB(200, 200, 200);
+    bit->Canvas->FillRect(Rect(frame.x + frame.xscrollpos + frame.xsmallscrollpos + 5,
 						 frame.y + frame.height - 15 + 5,
 						 frame.x + frame.xscrollpos + frame.xsmallscrollpos + 20,
 						 frame.y + frame.height - 7));
 
 
-   bit->Canvas->Font->Size = 8;
-   bit->Canvas->Brush->Color = RGB(250, 250, 250);
-   bit->Canvas->TextOutW(frame.x + frame.width - 40, frame.y + frame.height - 15, "< >");
+    bit->Canvas->Font->Size = 8;
+    bit->Canvas->Brush->Color = RGB(250, 250, 250);
+    bit->Canvas->TextOutW(frame.x + frame.width - 40, frame.y + frame.height - 15, "< >");
 }
 //---------------------------------------------------------------------------
 
@@ -1158,28 +1156,28 @@ void __fastcall TFMain::DrawWind(struct frames frame)
 //---------------------------------------------------------------------------
 void __fastcall TFMain::DrawPriceCandles(struct frames* frame_)
 {
-   if(!frame_ || !frame_->visible)
+    if(!frame_ || !frame_->visible)
 	  return;
 
-   struct frames frame = *frame_;
+    struct frames frame = *frame_;
 
-   int hthead     = 20;
-   int ht_volume  = 70;
+    int hthead     = 20;
+    int ht_volume  = 70;
 
-   unsi wcndl = ZoomCandles->Position; //40;
-   unsi ww    = ZoomCandles->Position;
-   unsi szCandle = ww;
+    unsi wcndl = ZoomCandles->Position; //40;
+    unsi ww    = ZoomCandles->Position;
+    unsi szCandle = ww;
 
-   int widthklasters = 600;
+    int widthklasters = 600;
 
-   if(!KlasternieObemi->Checked) widthklasters = 0;
+    if(!KlasternieObemi->Checked) widthklasters = 0;
 
-   struct candlesdata* cndls = candles[CurTimeFrame];
-   struct timedaymonthyear_candles* tmdmy = tmdmy_candles[CurTimeFrame];
+    struct candlesdata* cndls = candles[CurTimeFrame];
+    struct timedaymonthyear_candles* tmdmy = tmdmy_candles[CurTimeFrame];
 
-   // Спектр
-   if(spectr_fft)
-   {
+    // Спектр
+    if(spectr_fft)
+    {
 	   if(!SmartTest || SmartTest->count_orders <= 0)
 		  return;
 
@@ -1197,7 +1195,7 @@ void __fastcall TFMain::DrawPriceCandles(struct frames* frame_)
 	   float min = 1000000;
 	   float max = -1000000;
 
-       for(int o = 0; o < SmartTest->count_orders; o++)
+           for(int o = 0; o < SmartTest->count_orders; o++)
 	   {
 		   // Только покупки
 		   if(!SpectrSell->Checked && !SmartTest->orders[o].up)
@@ -1209,7 +1207,7 @@ void __fastcall TFMain::DrawPriceCandles(struct frames* frame_)
 		   // Только прибыльные
 		   if(!SpectrUbyt->Checked && ((SmartTest->orders[o].up && SmartTest->orders[o].price2 < SmartTest->orders[o].price1) ||
 			  (!SmartTest->orders[o].up && SmartTest->orders[o].price2 > SmartTest->orders[o].price1)) )
-              continue;
+                       continue;
 		   // Только убыточные
 		   if(!SpectrPrib->Checked && !((SmartTest->orders[o].up && SmartTest->orders[o].price2 < SmartTest->orders[o].price1) ||
 			  (!SmartTest->orders[o].up && SmartTest->orders[o].price2 > SmartTest->orders[o].price1)) )
@@ -1224,7 +1222,7 @@ void __fastcall TFMain::DrawPriceCandles(struct frames* frame_)
 		   if(!frame.show_hoursofday[hr - 10].show)
 			   continue;
 
-	       ZeroMemory(massfft, sizeof(double)*128);
+	           ZeroMemory(massfft, sizeof(double)*128);
 		   float pr = cndls[ind].priceclose;
 		   for(int i = ind; i >= ind - 128 && i >= 0; i--)
 		   {
@@ -1236,7 +1234,7 @@ void __fastcall TFMain::DrawPriceCandles(struct frames* frame_)
 			   ct_massfft[indm] ++;
 		   }
 
-	       ZeroMemory(massfft_res, sizeof(double)*128);
+	           ZeroMemory(massfft_res, sizeof(double)*128);
 		   FFT(massfft, massfft_res, 128,  128);
 		   for(int i = 0; i < 128; i++)
 		   {
@@ -1249,7 +1247,7 @@ void __fastcall TFMain::DrawPriceCandles(struct frames* frame_)
 			   if(max_fft[i] == 0 || massfft_res[i] > max_fft[i])
 				  max_fft[i] = massfft_res[i];
 
-               if(massfft_res[i] < min) min = massfft_res[i];
+                       if(massfft_res[i] < min) min = massfft_res[i];
 		       if(massfft_res[i] > max) max = massfft_res[i];
 		   }
 	   }
