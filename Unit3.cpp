@@ -13,25 +13,25 @@ __fastcall TSmartTest::TSmartTest(TComponent* Owner)
 	: TForm(Owner)
 {
     Application->OnMinimize = MinimizeProc;
-	Left = Screen->Width/2 - Width/2;
-	Top  = Screen->Height/2 - Height/2;
+    Left = Screen->Width/2 - Width/2;
+    Top  = Screen->Height/2 - Height/2;
 
-	//ZeroMemory(resvirag, sizeof(int)*4*7*15);
-	ZeroMemory(resvirag, sizeof(bool*)*4);
-	ZeroMemory(resvirag_hash, sizeof(int*)*4);
-	ZeroMemory(resvirag_sub, sizeof(bool*)*4*50);
-	ZeroMemory(resvirag_sub_hash, sizeof(int*)*4*50);
+    //ZeroMemory(resvirag, sizeof(int)*4*7*15);
+    ZeroMemory(resvirag, sizeof(bool*)*4);
+    ZeroMemory(resvirag_hash, sizeof(int*)*4);
+    ZeroMemory(resvirag_sub, sizeof(bool*)*4*50);
+    ZeroMemory(resvirag_sub_hash, sizeof(int*)*4*50);
 
     for(int d = 0; d < 6; d++)
+    {
+        for(int h = 0; h < 15; h++)
 	{
-       for(int h = 0; h < 15; h++)
-	   {
-			PervUslBuy[d][h]  = (struct viragenie*)malloc(sizeof(struct viragenie)*MAX_COUNT_PERV_USLOV);
-			VstrUslSell[d][h] = (struct viragenie*)malloc(sizeof(struct viragenie)*MAX_COUNT_VSTR_USLOV);
-			PervUslSell[d][h] = (struct viragenie*)malloc(sizeof(struct viragenie)*MAX_COUNT_PERV_USLOV);
-			VstrUslBuy[d][h]  = (struct viragenie*)malloc(sizeof(struct viragenie)*MAX_COUNT_VSTR_USLOV);
-	   }
+	    PervUslBuy[d][h]  = (struct viragenie*)malloc(sizeof(struct viragenie)*MAX_COUNT_PERV_USLOV);
+	    VstrUslSell[d][h] = (struct viragenie*)malloc(sizeof(struct viragenie)*MAX_COUNT_VSTR_USLOV);
+	    PervUslSell[d][h] = (struct viragenie*)malloc(sizeof(struct viragenie)*MAX_COUNT_PERV_USLOV);
+	    VstrUslBuy[d][h]  = (struct viragenie*)malloc(sizeof(struct viragenie)*MAX_COUNT_VSTR_USLOV);
 	}
+    }
 }
 //---------------------------------------------------------------------------
 int __fastcall TSmartTest::RaspoznavanieUslovii2(AnsiString text, struct viragenie* uslov)
@@ -43,22 +43,22 @@ int __fastcall TSmartTest::RaspoznavanieUslovii2(AnsiString text, struct viragen
    //условия разделяются запятыми
    while(1)
    {
-	   //делим выражение на услоыия
-	   int pos = text.AnsiPos(",");
-	   AnsiString usl = Trim(text);
-	   if(pos > 0)
-	   {
-		   usl  = Trim(text.SubString(1, pos - 1));
-		   text = text.SubString(pos + 1, text.Length() - pos);
-	   }
-	   if(usl == "" && pos <= 0) break;
-	   if(usl == "") continue;
+       //делим выражение на услоыия
+       int pos = text.AnsiPos(",");
+       AnsiString usl = Trim(text);
+       if(pos > 0)
+       {
+	   usl  = Trim(text.SubString(1, pos - 1));
+	   text = text.SubString(pos + 1, text.Length() - pos);
+       }
+       if(usl == "" && pos <= 0) break;
+       if(usl == "") continue;
 
-	   uslov[count_uslov] = *RaspoznavanieVirageniya2(usl);
-	   uslov[count_uslov].viragenie_sub_hash = uslov[count_uslov].CalcHash(usl);       // Для ускорения анализа. путем запоминания результата выражения для каждой свечки
-	   count_uslov++;
+       uslov[count_uslov] = *RaspoznavanieVirageniya2(usl);
+       uslov[count_uslov].viragenie_sub_hash = uslov[count_uslov].CalcHash(usl);       // Для ускорения анализа. путем запоминания результата выражения для каждой свечки
+       count_uslov++;
 
-	   if(pos <= 0) break;
+       if(pos <= 0) break;
    }                       
 
    return count_uslov;
@@ -73,26 +73,26 @@ struct viragenie* __fastcall TSmartTest::RaspoznavanieVirageniya2(AnsiString tex
    int count_skb = 0;
    for(int i = 1; i <= text.Length(); i++)
    {
-		if(text[i] == '(') count_skb++;
-		if(text[i] == ')') count_skb--;
-		if(count_skb == 0 && (text[i] == '&' || text[i] == '|'))
-		{
-			v = CreateVirageniya(0);
-			v->last = NULL;
-			AnsiString subText = text.SubString(1, i - 1);
-			v->sub  = RaspoznavanieVirageniya2(subText);
-			v->viragenie_sub_hash = v->CalcHash(subText);
+	if(text[i] == '(') count_skb++;
+	if(text[i] == ')') count_skb--;
+	if(count_skb == 0 && (text[i] == '&' || text[i] == '|'))
+	{
+	    v = CreateVirageniya(0);
+	    v->last = NULL;
+	    AnsiString subText = text.SubString(1, i - 1);
+	    v->sub  = RaspoznavanieVirageniya2(subText);
+	    v->viragenie_sub_hash = v->CalcHash(subText);
 
-			v2 = CreateVirageniya(text[i]);
-			v2->last = NULL;
-			subText = text.SubString(i + 1, text.Length() - i);
-			v2->sub  = RaspoznavanieVirageniya2(subText);
-			v2->viragenie_sub_hash = v->CalcHash(subText);
-			v->next = v2;
-			v->next->last = v;
+	    v2 = CreateVirageniya(text[i]);
+	    v2->last = NULL;
+	    subText = text.SubString(i + 1, text.Length() - i);
+	    v2->sub  = RaspoznavanieVirageniya2(subText);
+	    v2->viragenie_sub_hash = v->CalcHash(subText);
+	    v->next = v2;
+	    v->next->last = v;
 
-			return v;
-		}
+	    return v;
+	}
    }
 
    AnsiString vl        = "";
@@ -156,21 +156,21 @@ struct viragenie* __fastcall TSmartTest::RaspoznavanieVirageniya2(AnsiString tex
 				//если операция:* / ^ , то группируем с предыдущим, если он был
 				if(v2 && (bef_oper == '*' || bef_oper == '/' || bef_oper == '^') )
 				{
-						 struct viragenie* v3 = v2;
-						 v2 = CreateVirageniya(v3->before_operation);
-						 v2->last = v3->last;
-						 v3->before_operation = '\0';
-						 v2->sub = v3;
-						 v3->next = vir;
-						 vir->last = v3;
+					struct viragenie* v3 = v2;
+					v2 = CreateVirageniya(v3->before_operation);
+					v2->last = v3->last;
+					v3->before_operation = '\0';
+					v2->sub = v3;
+					v3->next = vir;
+					vir->last = v3;
 
-						 if(v3 == v) v = v2;
-						 else
-						 {
-							if(v3->last)
-							   v3->last->next = v2;
-						 }
-						 v3->last = NULL;
+					if(v3 == v) v = v2;
+					else
+					{
+					    if(v3->last)
+						v3->last->next = v2;
+				        }
+					v3->last = NULL;
 				}
 				else
 				{
@@ -275,30 +275,30 @@ struct viragenie* __fastcall TSmartTest::RaspoznavanieVirageniya2(AnsiString tex
 					  if(ch == '<') bef_oper = 1;
 					  if(ch == '>') bef_oper = 2;
 					  if(ch == '!') bef_oper = 3;
-                  }
+                                  }
 
-			   //если операция сравнения, то группируем всё что до отдельно и после
-			   //отдельно и вернем выражение
-			   if(v && (bef_oper == '<' || bef_oper == '>' || bef_oper == '=' ||
-			            bef_oper == '&' || bef_oper == '|' ||
-						bef_oper == 1 || bef_oper == 2 || bef_oper == 3))
-			   {
-					 struct viragenie* v3 = v;
-					 v = CreateVirageniya(0);
-					 v->last = NULL;
-					 v->sub  = v3;
-					 int ii = i;
-					 if(bef_oper == 1 || bef_oper == 2 || bef_oper == 3)
-					  ii ++;
-					 v3 = CreateVirageniya(bef_oper);
-					 AnsiString subText = text.SubString(ii + 1, text.Length() - ii);
-					 v3->sub = RaspoznavanieVirageniya2(subText);
-					 v3->viragenie_sub_hash = v3->CalcHash(subText);
-					 v->next = v3;
-					 v->next->last = v;
-					 
-					 return v;
-			   }
+				   //если операция сравнения, то группируем всё что до отдельно и после
+				   //отдельно и вернем выражение
+				   if(v && (bef_oper == '<' || bef_oper == '>' || bef_oper == '=' ||
+					    bef_oper == '&' || bef_oper == '|' ||
+							bef_oper == 1 || bef_oper == 2 || bef_oper == 3))
+				   {
+					struct viragenie* v3 = v;
+					v = CreateVirageniya(0);
+					v->last = NULL;
+					v->sub  = v3;
+					int ii = i;
+					if(bef_oper == 1 || bef_oper == 2 || bef_oper == 3)
+					ii ++;
+					v3 = CreateVirageniya(bef_oper);
+					AnsiString subText = text.SubString(ii + 1, text.Length() - ii);
+					v3->sub = RaspoznavanieVirageniya2(subText);
+					v3->viragenie_sub_hash = v3->CalcHash(subText);
+					v->next = v3;
+					v->next->last = v;
+
+					return v;
+				   }
 			   }
 
 			   if(ch == '(')
@@ -306,10 +306,10 @@ struct viragenie* __fastcall TSmartTest::RaspoznavanieVirageniya2(AnsiString tex
 				   sk = 1;
 				   skb = true;
 			   }
-			}
-	  }
+		   }
+	    }
 
-      }
+       }
    }
 
    vl = Trim(vl);
@@ -414,7 +414,7 @@ void __fastcall TSmartTest::ParserConstants(AnsiString ConstVals)
 					 const_val[count_const] = const_val[count_const].SubString(2, const_val[count_const].Length() - 1);
 				 }
 				 else
-                    const_otnosit[count_const] = false;
+                                    const_otnosit[count_const] = false;
 
 				 int resval = 0;
 				 if(!TryStrToInt(const_val[count_const], resval))
