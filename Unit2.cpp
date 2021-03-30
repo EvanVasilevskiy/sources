@@ -732,9 +732,9 @@ void __fastcall TFMain::CalcVolumesVolatilnostFramesHistogramms()
 
 			if(i == 7 && count_candles[i] > 0)
 			{
-			   for(int c = 0; c < 31; c++)
-				  if(ct_avg_volat_days_month[c] > 0)
-					 avg_volat_days_month[c] /= ct_avg_volat_days_month[c];
+			        for(int c = 0; c < 31; c++)
+				       if(ct_avg_volat_days_month[c] > 0)
+					      avg_volat_days_month[c] /= ct_avg_volat_days_month[c];
 			}
 
 			if(i < 6)
@@ -757,9 +757,8 @@ void __fastcall TFMain::CalcVolumesVolatilnostFramesHistogramms()
 				{
 					// Если некорректное время или цена, то пропустим
 					if(candles[i][c].timeopen > 10000000000 || candles[i][c].timeopen < 0 ||
-				       candles[i][c].priceclose > 1000000000 || candles[i][c].priceclose < 0)
+				           candles[i][c].priceclose > 1000000000 || candles[i][c].priceclose < 0)
 					{
-					   int aa = 11;
 					   continue;
 					}
 
@@ -774,7 +773,7 @@ void __fastcall TFMain::CalcVolumesVolatilnostFramesHistogramms()
 						numyear      = tmdmy_candles[i][c].year;
 					}
 					catch(...)
-					{ int aa = 11; }
+					{  }
 
 					float vol = candles[i][c].volume;
 					volume_hours_day[numhour]      += vol;
@@ -794,7 +793,7 @@ void __fastcall TFMain::CalcVolumesVolatilnostFramesHistogramms()
 				for(int ds = 0; ds < 7; ds++)
 				{
 					if(ct_volume_days_week[ds] > 0)
-					   volume_days_week[ds] /= ct_volume_days_week[ds];
+					        volume_days_week[ds] /= ct_volume_days_week[ds];
                                 }
 			}
 		}
