@@ -425,7 +425,7 @@ void __fastcall TFMain::N3Click(TObject *Sender)
 
        //сохраним в быстром формате
        AnsiString file = OD->FileName + ".tida";  
-           FILE* fl = NULL;
+       FILE* fl = NULL;
        fl = fopen(file.c_str(), "wb");
        if(fl)
        {
