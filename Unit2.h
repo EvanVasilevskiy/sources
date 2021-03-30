@@ -119,60 +119,60 @@ static Letter g_letters[] = {
 
 int convert_utf8_to_windows1251(const char* utf8, char* windows1251, size_t n)
 {
-    int i = 0;
-    int j = 0;
-    for(; i < (int)n && utf8[i] != 0; ++i) 
+        int i = 0;
+        int j = 0;
+        for(; i < (int)n && utf8[i] != 0; ++i) 
 	{
-        char prefix = utf8[i];
-        char suffix = utf8[i+1];
-        if ((prefix & 0x80) == 0) 
+		char prefix = utf8[i];
+		char suffix = utf8[i+1];
+		if ((prefix & 0x80) == 0) 
 		{
-            windows1251[j] = (char)prefix;
-            ++j;
-        } 
+		        windows1251[j] = (char)prefix;
+		        ++j;
+                } 
 		else if ((~prefix) & 0x20) 
 		{
-            int first5bit = prefix & 0x1F;
-            first5bit <<= 6;
-            int sec6bit = suffix & 0x3F;
-            int unicode_char = first5bit + sec6bit;
+		        int first5bit = prefix & 0x1F;
+		        first5bit <<= 6;
+		        int sec6bit = suffix & 0x3F;
+		        int unicode_char = first5bit + sec6bit;
 
-            if ( unicode_char >= 0x410 && unicode_char <= 0x44F ) 
+		        if ( unicode_char >= 0x410 && unicode_char <= 0x44F ) 
 			{
-                windows1251[j] = (char)(unicode_char - 0x350);
-            } 
+			       windows1251[j] = (char)(unicode_char - 0x350);
+		        } 
 			else if (unicode_char >= 0x80 && unicode_char <= 0xFF) 
 			{
-                windows1251[j] = (char)(unicode_char);
-            } 
+			        windows1251[j] = (char)(unicode_char);
+		        } 
 			else if (unicode_char >= 0x402 && unicode_char <= 0x403) 
 			{
-                windows1251[j] = (char)(unicode_char - 0x382);
-            } 
+			        windows1251[j] = (char)(unicode_char - 0x382);
+		        } 
 			else 
 			{
-                int count = sizeof(g_letters) / sizeof(Letter);
-                for (int k = 0; k < count; ++k) 
+				int count = sizeof(g_letters) / sizeof(Letter);
+				for (int k = 0; k < count; ++k) 
 				{
-                    if (unicode_char == g_letters[k].unicode) 
+				        if (unicode_char == g_letters[k].unicode) 
 					{
-                        windows1251[j] = g_letters[k].win1251;
-                        goto NEXT_LETTER;
-                    }
-                }
-                // can't convert this char
-                return 0;
-            }
-            NEXT_LETTER:
-                        ++i;
-                        ++j;
+					        windows1251[j] = g_letters[k].win1251;
+					        goto NEXT_LETTER;
+				        }
+                                }
+			        // can't convert this char
+			        return 0;
+		        }
+                        NEXT_LETTER:
+                            ++i;
+                            ++j;
                 } else {
                         // can't convert this chars
                         return 0;
                 }
-    }
-    windows1251[j] = 0;
-    return 1;
+        }
+        windows1251[j] = 0;
+        return 1;
 }
 
 // AVal - массив анализируемых данных, Nvl - длина массива должна быть кратна степени 2.
@@ -182,41 +182,41 @@ const double TwoPi = 6.283185307179586;
 
 void FFT(double *AVal, double *FTvl, int Nvl, int Nft)
 {
-    int i, j, n, m, Mmax, Istp;
-    double Tmpr, Tmpi, Wtmp, Theta;
-    double Wpr, Wpi, Wr, Wi;
-    double *Tmvl;
+        int i, j, n, m, Mmax, Istp;
+        double Tmpr, Tmpi, Wtmp, Theta;
+        double Wpr, Wpi, Wr, Wi;
+        double *Tmvl;
 
-    n = Nvl * 2; Tmvl = new double[n];
+        n = Nvl * 2; Tmvl = new double[n];
 
-    for (i = 0; i < n; i+=2) 
+        for (i = 0; i < n; i+=2) 
 	{
-       Tmvl[i] = 0;
-       Tmvl[i + 1] = AVal[i/2];
-    }
+               Tmvl[i] = 0;
+               Tmvl[i + 1] = AVal[i/2];
+        }
 
-    i = 1; j = 1;
-    while (i < n) 
+        i = 1; j = 1;
+        while (i < n) 
 	{
 		if (j > i) 
 		{
-		    Tmpr = Tmvl[i]; 
+		        Tmpr = Tmvl[i]; 
 			Tmvl[i] = Tmvl[j]; 
 			Tmvl[j] = Tmpr;
-		    Tmpr = Tmvl[i + 1]; 
+		        Tmpr = Tmvl[i + 1]; 
 			Tmvl[i + 1] = Tmvl[j + 1]; 
 			Tmvl[j + 1] = Tmpr;
 		}
 		i = i + 2; m = Nvl;
 		while ((m >= 2) && (j > m)) 
 		{
-		    j = j - m; m = m >> 1;
+		       j = j - m; m = m >> 1;
 		}
 		j = j + m;
-    }
+        }
 
-    Mmax = 2;
-    while (n > Mmax) 
+        Mmax = 2;
+        while (n > Mmax) 
 	{
 		Theta = -TwoPi / Mmax; 
 		Wpi = sin(Theta);
@@ -227,12 +227,12 @@ void FFT(double *AVal, double *FTvl, int Nvl, int Nft)
 
 		while (m < Mmax) 
 		{
-		    i = m; m = m + 2; Tmpr = Wr; Tmpi = Wi;
-		    Wr = Wr - Tmpr * Wpr - Tmpi * Wpi;
-		    Wi = Wi + Tmpr * Wpi - Tmpi * Wpr;
+		        i = m; m = m + 2; Tmpr = Wr; Tmpi = Wi;
+		        Wr = Wr - Tmpr * Wpr - Tmpi * Wpi;
+		        Wi = Wi + Tmpr * Wpi - Tmpi * Wpr;
 
-		    while (i < n) 
-		    {
+		        while (i < n) 
+		        {
 				j = i + Mmax;
 				Tmpr = Wr * Tmvl[j] - Wi * Tmvl[j - 1];
 				Tmpi = Wi * Tmvl[j] + Wr * Tmvl[j - 1];
@@ -242,19 +242,19 @@ void FFT(double *AVal, double *FTvl, int Nvl, int Nft)
 				Tmvl[i] = Tmvl[i] + Tmpr; 
 				Tmvl[i - 1] = Tmvl[i - 1] + Tmpi;
 				i = i + Istp;
-		    }
+		        }
 		}
 
 		Mmax = Istp;
-    }
+        }
 
-    for (i = 0; i < Nft; i++) 
+        for (i = 0; i < Nft; i++) 
 	{
-        j = i * 2; 
+                j = i * 2; 
 		FTvl[i] = 2*sqrt(pow(Tmvl[j], 2) + pow(Tmvl[j + 1], 2)) / Nvl;
-    }
+        }
 
-  delete []Tmvl;
+        delete []Tmvl;
 }
 
 
@@ -542,7 +542,7 @@ typedef struct klaster
 
   struct klasterdata* AddKlaster(float price)
   {
-     struct klasterdata* kl = (struct klasterdata*)malloc(sizeof(struct klasterdata));
+         struct klasterdata* kl = (struct klasterdata*)malloc(sizeof(struct klasterdata));
 	 ZeroMemory(kl, sizeof(struct klasterdata));
 	 count++;
 	 kl->price = price;
@@ -797,10 +797,10 @@ __published:	// IDE-managed Components
 	void __fastcall N315cit1Click(TObject *Sender);
 
 private:	// User declarations
-    Gdiplus::Graphics* graphics;
+        Gdiplus::Graphics* graphics;
 	Graphics::TBitmap* bit;
 
-    int myProcessorThreads;                                              // Всего потоков всех ядер
+        int myProcessorThreads;                                              // Всего потоков всех ядер
 
 	int count_frames;
 	struct frames iframes[100];
@@ -811,11 +811,11 @@ private:	// User declarations
 
 	AnsiString CurFileName;
 	bool movegorscroll;
-    bool MoveIntoFramePriceCandles;
+        bool MoveIntoFramePriceCandles;
 	int  lastX, lastY;
 	bool pushright;
 	bool graphics_orders;
-    bool spectr_fft;
+        bool spectr_fft;
 
 	void __fastcall  DrawWind(struct frames frame);
 	void __fastcall  DrawPriceCandles(struct frames* frame);
@@ -830,7 +830,7 @@ private:	// User declarations
 	void __fastcall  GetCandlesAllTimeFrames2(struct candlesdata* cndls, int count);
 	void __fastcall  IndexesCandlesNews();
 	void __fastcall  CalcAll();
-    void __fastcall CalcMinHourDayMonthYear();                           // Вычислим минуты часы дни месяцы годы для оптимизации скорости анализа
+        void __fastcall CalcMinHourDayMonthYear();                           // Вычислим минуты часы дни месяцы годы для оптимизации скорости анализа
 	void __fastcall  CalcVolumesVolatilnostFramesHistogramms();          // Гистограммы объемов и волатильности
 	void __fastcall  SetCalcZoomVolume();                                // Вычислим ZoomVolume для выбранного таймфрейма
 	int __fastcall   EvStrToTime(AnsiString date, AnsiString time);
@@ -843,16 +843,16 @@ private:	// User declarations
 	AnsiString __fastcall GetTime(__int64 unixtime);
 	AnsiString __fastcall GetDate(__int64 unixtime);
 	AnsiString __fastcall FormatDig(AnsiString str);
-    void __fastcall GetDayData(__int64 unixtime, int &numhour, int &numdayofweek,
+        void __fastcall GetDayData(__int64 unixtime, int &numhour, int &numdayofweek,
 	                                 int &numdaym, int &nummonth, int &numyear);
 	int __fastcall GetHour(__int64 unixtime);
 	int __fastcall GetNumDayOfWeek(__int64 unixtime);
 	int __fastcall GetNumDayOfMonth(__int64 unixtime);
 	
-    double __fastcall RoundSmart(double zn);                             // Округляем значение, исходя из его велечины
+        double __fastcall RoundSmart(double zn);                             // Округляем значение, исходя из его велечины
 	AnsiString __fastcall FormatDigit(double zn);                        // Форматируем число, чтобы оно было читаемым
 	float* __fastcall Malloc(int size);                                  // Выделим память и обнулим её
-    int* __fastcall Malloc2(int size);
+        int* __fastcall Malloc2(int size);
 	float** __fastcall Malloc(int size1, int size2);                     // Выделим память и обнулим её
 	int** __fastcall Malloc2(int size1, int size2);
 
@@ -903,13 +903,13 @@ public:		// User declarations
 
 	unsi CurTimeFrame;
 	int CurSearchIndexCandles;                           //при поиске дня и времени
-    int CurSelIndexCandles;
-    int curSelNumOrder;
+        int CurSelIndexCandles;
+        int curSelNumOrder;
 
 	void __fastcall DrawAll();
 
 	struct frames* __fastcall AddFrame(unsi type, AnsiString id = "");
-    struct frames* __fastcall SearchOrAddFrame(unsi type, AnsiString id);
+        struct frames* __fastcall SearchOrAddFrame(unsi type, AnsiString id);
 	struct frames* __fastcall SearchFrame(unsi type, AnsiString id);
 	void __fastcall HideFramesOscillators();
 
@@ -934,7 +934,7 @@ public:		// User declarations
 	void __fastcall SelCurTimeFrame(int curtf);
 	void __fastcall OpenTida(AnsiString FileName);
 	void __fastcall OpenCada(AnsiString FileName);
-    void __fastcall ClearCandles();
+        void __fastcall ClearCandles();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TFMain *FMain;
